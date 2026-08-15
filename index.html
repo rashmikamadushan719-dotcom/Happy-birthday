@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Happy Birthday Honey 💗</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden}
+body{font-family:Georgia,"Times New Roman",serif;background:radial-gradient(circle at 50% 25%,#fff0f5,#f5b7ca 45%,#b85c80);color:#fff}
+.screen{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;padding:22px;opacity:0;pointer-events:none;transition:opacity 1s}
+.screen.active{opacity:1;pointer-events:auto}.card{width:min(92vw,720px);padding:35px 24px;border-radius:30px;background:#ffffff25;backdrop-filter:blur(10px);border:1px solid #ffffff55;box-shadow:0 20px 60px #58172d40}
+h1{font-size:clamp(35px,9vw,72px);margin:10px 0 25px;text-shadow:0 4px 20px #6b193955}
+p{font-size:clamp(18px,4.5vw,27px);line-height:1.55;margin:13px 0}
+button{border:0;border-radius:999px;padding:16px 28px;font:inherit;font-size:20px;color:white;background:#d84e7b;box-shadow:0 8px 25px #6b193955;cursor:pointer}
+button:active{transform:scale(.96)}
+.decor{position:absolute;inset:0;overflow:hidden;pointer-events:none}.item{position:absolute;animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-45px) rotate(7deg)}}
+#photos{background:radial-gradient(circle at 50% 25%,#ffeef5,#e6a2bb 55%,#ad5678)}
+.fade{animation:fade 1.2s both}@keyframes fade{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+.final h2{font-size:clamp(32px,8vw,62px);line-height:1.25}.timer{opacity:.8}
+</style>
+</head>
+<body>
+<div class="decor" id="decor"></div>
+
+<section class="screen active" id="start">
+<div class="card"><div style="font-size:72px">🎈🌹🎈</div><button id="startBtn">Click to surprise 🎉💗</button></div>
+</section>
+
+<section class="screen" id="birthday">
+<div class="card fade">
+<h1>HAPPY BIRTHDAY HONEY🥹♥️🫶</h1>
+<p>It's 21/10/2026. You passed 16 years from 2010.</p>
+<p>Happy birthday babe🥹💗.<br>From now you turn to 16yrs.<br>I love you forever and ever♾️💗</p>
+<button id="memoriesBtn">Continue 💗</button>
+</div>
+</section>
+
+<section class="screen" id="photos">
+<div class="card fade">
+<div style="font-size:100px">🌹💗🌹</div>
+<h1 style="font-size:clamp(30px,7vw,54px)">A little more for you 🥹</h1>
+<p>Your beautiful memories will be added here later. 💗</p>
+<button id="lastBtn">One last thing for you 💗</button>
+</div>
+</section>
+
+<section class="screen" id="final">
+<div class="card fade">
+<div style="font-size:80px">🌹🎈💗🎈🌹</div>
+<h2>I love you forever and ever my birthday girl💘🫶</h2>
+<div class="timer" id="timer">15</div>
+</div>
+</section>
+
+<script>
+const screens=document.querySelectorAll('.screen');
+function show(id){screens.forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function decorate(n){
+ const d=document.getElementById('decor');d.innerHTML='';
+ const icons=['🎈','🌹','💗','✨','💕'];
+ for(let i=0;i<n;i++){
+  const e=document.createElement('span');e.className='item';e.textContent=icons[i%icons.length];
+  e.style.left=Math.random()*96+'vw';e.style.top=Math.random()*92+'vh';
+  e.style.fontSize=(22+Math.random()*38)+'px';e.style.animationDelay=Math.random()*5+'s';
+  d.appendChild(e);
+ }
+}
+let audioCtx;
+function startMusic(){
+ const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+ audioCtx=new C();const notes=[261.63,329.63,392,329.63,293.66,349.23,440,349.23];
+ function melody(){
+  let t=audioCtx.currentTime;
+  notes.forEach((f,i)=>{let o=audioCtx.createOscillator(),g=audioCtx.createGain();
+   o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.001,t+i*1.15);
+   g.gain.linearRampToValueAtTime(.035,t+i*1.15+.08);g.gain.exponentialRampToValueAtTime(.001,t+i*1.15+1.05);
+   o.connect(g).connect(audioCtx.destination);o.start(t+i*1.15);o.stop(t+i*1.15+1.08);
+  });setTimeout(melody,9000);
+ } melody();
+}
+document.getElementById('startBtn').onclick=()=>{startMusic();decorate(25);show('birthday')};
+document.getElementById('memoriesBtn').onclick=()=>{decorate(18);show('photos')};
+document.getElementById('lastBtn').onclick=()=>{
+ decorate(80);show('final');let n=15;const t=document.getElementById('timer');t.textContent=n;
+ const iv=setInterval(()=>{n--;t.textContent=n;if(n<=0)clearInterval(iv)},1000);
+};
+</script>
+</body>
+</html>
